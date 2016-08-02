@@ -10,7 +10,7 @@ const int A_MY_SCALE_NN = 1;
 
 /*
  * The factory class for getting the instances of base class aMyScale, 
- * which can either be aMyScaleNN classes or aMyScaleMax classes.
+ * which can either be aMyScaleNN or aMyScaleMax class objects.
  */
  
 template<class T>
