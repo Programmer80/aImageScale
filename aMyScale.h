@@ -10,7 +10,7 @@
 
 template<class T>
 class aMyScale {
-public:
+protected:
 
 	/* 
 	 * The dimensions of the old image.
@@ -36,13 +36,22 @@ public:
 	double m_ratioX;
 	double m_ratioY;
 	double m_ratioZ;
+	
+	/*
+	 * A function that will decide the color of the corresponding pixel.
+	 * The implemenation depends on the method of the scaling.
+	 */
+
+	virtual T decidePixelColor (aImage<T>& inputImage, const size_t x, const size_t y, const size_t z) = 0;
 
 public:
 
-	void doScale (aImage<T>& inputImage, aImage<T>& outputImage) ;
-		
-	virtual T decidePixelColor (aImage<T>& inputImage, const size_t x, const size_t y, const size_t z) = 0;
+	/*
+	 * The main function for the scaling.
+	 */
 
+	void make (aImage<T>& inputImage, aImage<T>& outputImage) ;
+		
 };
 
 #endif

@@ -10,7 +10,7 @@
  */
 
 template<class T>
-void aMyScale<T>::doScale (aImage<T>& inputImage, aImage<T>& outputImage) {
+void aMyScale<T>::make (aImage<T>& inputImage, aImage<T>& outputImage) {
 		
 	/*
 	 * Get the diminsions of the old image
@@ -61,3 +61,7 @@ void aMyScale<T>::doScale (aImage<T>& inputImage, aImage<T>& outputImage) {
 
 template class aMyScale<unsigned char>;
 template class aMyScale<char>;
+template class aMyScale<unsigned short>;
+template class aMyScale<short>;
+template class aMyScale<unsigned int>;
+template class aMyScale<int>;

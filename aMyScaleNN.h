@@ -18,9 +18,13 @@ private:
 	                          const double y2, 
 	                          const double z2) ;
 
-public:
+protected:
     
 	T decidePixelColor (aImage<T>& inputImage, const size_t x, const size_t y, const size_t z) ;
+	
+public:	
+	
+	virtual ~aMyScaleNN() ;
     
 };
 
