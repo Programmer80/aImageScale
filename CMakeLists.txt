@@ -1,3 +1,4 @@
+# aImageScale
 # This project is designed to be built outside the Insight source tree.
 cmake_minimum_required(VERSION 2.8)
 PROJECT(timagescale)
