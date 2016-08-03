@@ -17,22 +17,23 @@ void displayErrorMessage (const char* executableName) {
 }
 
 /*
- * Separate convert routine for unsigned 8-bit images.
+ * Convert routine for different image types.
  */
 
-void convert8bit (char* inputFileName, 
-                  char* outputFileName,
-                  const size_t oldSizeX,
-                  const size_t oldSizeY,
-                  const size_t oldSizeZ, 
-                  const size_t newSizeX, 
-                  const size_t newSizeY, 
-                  const size_t newSizeZ, 
-                  const int method) {
+template<class T>
+void convert (char* inputFileName, 
+              char* outputFileName,
+              const size_t oldSizeX,
+              const size_t oldSizeY,
+              const size_t oldSizeZ, 
+              const size_t newSizeX, 
+              const size_t newSizeY, 
+              const size_t newSizeZ, 
+              const int method) {
 					  
-	aInputOutput<unsigned char> inputOutput;
-	aImage<unsigned char> inputImage;
-	aImage<unsigned char> outputImage;
+	aInputOutput<T> inputOutput;
+	aImage<T> inputImage;
+	aImage<T> outputImage;
 	
 	/*
 	 * Giving the sought sizes for the input and output images.
@@ -51,72 +52,17 @@ void convert8bit (char* inputFileName,
 	 * Getting a resizer accoring to the format.
 	 */
 
-	aMyScale<unsigned char>* resizer;
+	aMyScale<T>* resizer;
 	if (method == 0)
-		resizer = aMyScaleFactory<unsigned char>::getScaler(A_MY_SCALE_NN);
+		resizer = aMyScaleFactory<T>::getScaler(A_MY_SCALE_NN);
 	else if (method == 1)
-		resizer = aMyScaleFactory<unsigned char>::getScaler(A_MY_SCALE_MAX);
+		resizer = aMyScaleFactory<T>::getScaler(A_MY_SCALE_MAX);
 
 	/*
 	 * Scaling and output.
 	 */
 
-	resizer->doScale(inputImage, outputImage);
-	inputOutput.writeRaw(outputFileName, outputImage);
-	
-	/*
-	 * Freeing the memory from the resizer.
-	 */
-	
-	delete resizer;
-}
-
-/*
- * Separate convert routine for unsigned 16-bit images.
- */
-
-void convert16bit (char* inputFileName, 
-                   char* outputFileName,
-                   const size_t oldSizeX,
-                   const size_t oldSizeY,
-                   const size_t oldSizeZ, 
-                   const size_t newSizeX, 
-                   const size_t newSizeY, 
-                   const size_t newSizeZ, 
-                   const int method) {
-	
-	aInputOutput<unsigned short> inputOutput;
-	aImage<unsigned short> inputImage;
-	aImage<unsigned short> outputImage;
-	
-	/*
-	 * Giving the sought sizes for the input and output images.
-	 */
-	
-	inputImage.resize(oldSizeX, oldSizeY, oldSizeZ);
-	outputImage.resize(newSizeX, newSizeY, newSizeZ);
-	
-	/*
-	 * Reading input image.
-	 */ 
-	
-	inputOutput.readRaw(inputFileName, inputImage);
-
-	/*
-	 * Getting a resizer accoring to the format.
-	 */
-
-	aMyScale<unsigned short>* resizer;
-	if (method == 0)
-		resizer = aMyScaleFactory<unsigned short>::getScaler(A_MY_SCALE_NN);
-	else if (method == 1)
-		resizer = aMyScaleFactory<unsigned short>::getScaler(A_MY_SCALE_MAX);
-
-	/*
-	 * Scaling and output.
-	 */
-
-	resizer->doScale(inputImage, outputImage);
+	resizer->make(inputImage, outputImage);
 	inputOutput.writeRaw(outputFileName, outputImage);
 	
 	/*
@@ -158,9 +104,9 @@ int main (int argc, char ** argv) {
 			displayErrorMessage(argv[0]);
 		
 		if (depth == 8)
-			convert8bit(inputFileName, outputFileName, oldSizeX, oldSizeY, oldSizeZ, newSizeX, newSizeY, newSizeZ, method);
+			convert<unsigned char>(inputFileName, outputFileName, oldSizeX, oldSizeY, oldSizeZ, newSizeX, newSizeY, newSizeZ, method);
 		else
-			convert16bit(inputFileName, outputFileName, oldSizeX, oldSizeY, oldSizeZ, newSizeX, newSizeY, newSizeZ, method);
+			convert<unsigned short>(inputFileName, outputFileName, oldSizeX, oldSizeY, oldSizeZ, newSizeX, newSizeY, newSizeZ, method);
 	}		
     return 0;
 }
